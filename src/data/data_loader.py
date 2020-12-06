@@ -1,6 +1,7 @@
 """
 Data loader module
 """
+import json
 import pandas as pd
 
 
@@ -11,13 +12,17 @@ class DataLoader:
         self.input_filepath = input_filepath
         self.output_filepath = output_filepath
 
-        self._get_data()
+        raw_data = self._get_data()
         self._transform_data()
         self._load_data()
 
-    def _get_data(self) -> None:
+    def _get_data(self) -> list[dict]:
         """private method to get data from Dropbox"""
-        pass
+        j_content = []
+        with open(self.input_filepath) as f:
+            for line in f:
+                j_content.append(json.loads(line))
+        return j_content
 
     def _transform_data(self) -> pd.DataFrame:
         """private method to structure data from raw location"""
